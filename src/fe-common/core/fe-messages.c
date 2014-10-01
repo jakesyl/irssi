@@ -82,7 +82,9 @@ char *expand_emphasis(WI_ITEM_REC *item, const char *text)
 			continue;
 		if (!ishighalnum(end[-1]) || ishighalnum(end[1]) ||
 		    end[1] == type || end[1] == '*' || end[1] == '_' ||
-		    (type == 29 && end[1] != '\0' && ishighalnum(end[2])))
+		    /* special case for italics to not emphasise
+		       common paths by skipping /.../.X */
+		    (type == 29 && i_ispunct(end[1]) && ishighalnum(end[2])))
 			continue;
 
 		if (IS_CHANNEL(item)) {
@@ -90,7 +92,7 @@ char *expand_emphasis(WI_ITEM_REC *item, const char *text)
 			   use emphasis on them. */
 			int found;
                         char c;
-			char *end2; 
+			char *end2;
 
 			/* check if _foo_ is a nick */
 			c = end[1];
@@ -232,7 +234,7 @@ static void sig_message_public(SERVER_REC *server, const char *msg,
 				    for_me ? TXT_PUBMSG_ME_CHANNEL :
 				    TXT_PUBMSG_CHANNEL,
 				    printnick, target, msg, nickmode);
-	}						
+	}
 
 	g_free_not_null(nickmode);
 	g_free_not_null(freemsg);

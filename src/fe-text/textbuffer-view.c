@@ -213,7 +213,7 @@ view_update_line_cache(TEXT_BUFFER_VIEW_REC *view, LINE_REC *line)
 	color = ATTR_RESETFG | ATTR_RESETBG;
 	xpos = 0; indent_pos = view->default_indent;
 	last_space = last_color = 0; last_space_ptr = NULL; sub = NULL;
-	last_bg24 = last_fg24 = UINT_MAX;
+	bg24 = fg24 = last_bg24 = last_fg24 = UINT_MAX;
 
         indent_func = view->default_indent_func;
         linecount = 1;
@@ -1228,7 +1228,7 @@ void textbuffer_view_remove_line(TEXT_BUFFER_VIEW_REC *view, LINE_REC *line)
 void textbuffer_view_remove_lines_by_level(TEXT_BUFFER_VIEW_REC *view, int level)
 {
 	LINE_REC *line, *next;
-	
+
 	term_refresh_freeze();
 	line = textbuffer_view_get_lines(view);
 

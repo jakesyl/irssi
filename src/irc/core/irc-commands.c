@@ -790,7 +790,7 @@ static void cmd_knockout(const char *data, IRC_SERVER_REC *server,
 
 	bancmd = *banmasks == '\0'? NULL :
 		g_strdup_printf("%s %s", channel->name, banmasks);
-	
+
         if (settings_get_bool("kick_first_on_kickban")) {
 		signal_emit("command kick", 3, kickcmd, server, channel);
 		if (bancmd != NULL)
@@ -894,7 +894,7 @@ static void cmd_accept(const char *data, IRC_SERVER_REC *server)
 {
         CMD_IRC_SERVER(server);
 
-	if (*data == '\0') 
+	if (*data == '\0')
 		irc_send_cmd(server, "ACCEPT *");
 	else
 		irc_send_cmdv(server, "ACCEPT %s", data);
@@ -905,7 +905,7 @@ static void cmd_unsilence(const char *data, IRC_SERVER_REC *server)
 {
         CMD_IRC_SERVER(server);
 
-	if (*data == '\0') 
+	if (*data == '\0')
 		cmd_return_error(CMDERR_NOT_ENOUGH_PARAMS);
 
 	irc_send_cmdv(server, "SILENCE -%s", data);
@@ -998,15 +998,11 @@ void irc_commands_init(void)
 	command_bind_irc("trace", NULL, (SIGNAL_FUNC) command_self);
 	/* SYNTAX: VERSION [<server>|<nick>] */
 	command_bind_irc("version", NULL, (SIGNAL_FUNC) command_self);
-	/* SYNTAX: SERVLIST [<server mask>] */
-	command_bind_irc("servlist", NULL, (SIGNAL_FUNC) command_self);
 	/* SYNTAX: SILENCE [[+|-]<nick!user@host>]
 	           SILENCE [<nick>] */
 	command_bind_irc("silence", NULL, (SIGNAL_FUNC) command_self);
 	command_bind_irc("unsilence", NULL, (SIGNAL_FUNC) cmd_unsilence);
 	command_bind_irc("sconnect", NULL, (SIGNAL_FUNC) cmd_sconnect);
-	/* SYNTAX: SQUERY <service> [<commands>] */
-	command_bind_irc("squery", NULL, (SIGNAL_FUNC) command_2self);
 	/* SYNTAX: DIE */
 	command_bind_irc("die", NULL, (SIGNAL_FUNC) command_self);
 	/* SYNTAX: HASH */
@@ -1014,12 +1010,8 @@ void irc_commands_init(void)
 	command_bind_irc("oper", NULL, (SIGNAL_FUNC) cmd_oper);
 	/* SYNTAX: RESTART */
 	command_bind_irc("restart", NULL, (SIGNAL_FUNC) command_self);
-	/* SYNTAX: RPING <server> */
-	command_bind_irc("rping", NULL, (SIGNAL_FUNC) command_self);
 	/* SYNTAX: SQUIT <server>|<mask> <reason> */
 	command_bind_irc("squit", NULL, (SIGNAL_FUNC) command_2self);
-	/* SYNTAX: UPING <server> */
-	command_bind_irc("uping", NULL, (SIGNAL_FUNC) command_self);
 	/* SYNTAX: USERHOST <nicks> */
 	command_bind_irc("userhost", NULL, (SIGNAL_FUNC) command_self);
 	command_bind_irc("quote", NULL, (SIGNAL_FUNC) cmd_quote);
@@ -1079,18 +1071,14 @@ void irc_commands_deinit(void)
 	command_unbind("time", (SIGNAL_FUNC) command_self);
 	command_unbind("trace", (SIGNAL_FUNC) command_self);
 	command_unbind("version", (SIGNAL_FUNC) command_self);
-	command_unbind("servlist", (SIGNAL_FUNC) command_self);
 	command_unbind("silence", (SIGNAL_FUNC) command_self);
 	command_unbind("unsilence", (SIGNAL_FUNC) cmd_unsilence);
 	command_unbind("sconnect", (SIGNAL_FUNC) cmd_sconnect);
-	command_unbind("squery", (SIGNAL_FUNC) command_2self);
 	command_unbind("die", (SIGNAL_FUNC) command_self);
 	command_unbind("hash", (SIGNAL_FUNC) command_self);
 	command_unbind("oper", (SIGNAL_FUNC) cmd_oper);
 	command_unbind("restart", (SIGNAL_FUNC) command_self);
-	command_unbind("rping", (SIGNAL_FUNC) command_self);
 	command_unbind("squit", (SIGNAL_FUNC) command_2self);
-	command_unbind("uping", (SIGNAL_FUNC) command_self);
 	command_unbind("userhost", (SIGNAL_FUNC) command_self);
 	command_unbind("quote", (SIGNAL_FUNC) cmd_quote);
 	command_unbind("wall", (SIGNAL_FUNC) cmd_wall);
